@@ -1,0 +1,86 @@
+pipeline {
+agent any
+
+stages {
+ 
+
+         stage('Cloning from GitHub') {
+                steps {
+                    git branch: 'rania_categorie', url: 'https://github.com/semah1213/achat'
+                }  
+            }
+           
+               stage('maven clean') {
+                        steps {
+                           sh 'mvn clean '
+                        }
+                    }
+          stage('maven compile') {
+            steps {
+               sh 'mvn compile'
+           }
+        }
+
+          stage('maven test / MOCKITO') {
+            steps {
+               sh 'mvn test'
+            }
+        }
+        stage('maven package') {
+             steps {
+               sh 'mvn package'
+          }
+       }
+          stage('maven verify') {
+             steps {
+               sh 'mvn verify'
+          }
+       }
+       stage("docker build") {
+                       steps{
+
+                           sh 'docker build -t rania_categorie/achat .'
+                       }
+               }
+           stage("DockerHub login ") {
+                       steps{
+                           sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u rania_categorie -p dockerpass'
+                       }
+               }
+           stage("DockerHub push") {
+                       steps{
+                        sh 'docker push rania_categorie/achat'
+                   }
+              }
+       stage('Docker-compose file') {
+
+                          steps {
+                               sh 'docker-compose up -d';
+                               sh 'sleep 300'
+                               
+                                 }  }
+       stage ('DETECT SONARQUBE'){
+            steps {
+    sh "mvn sonar:sonar \
+  -Dsonar.projectKey=00a3306aeef8 \
+  -Dsonar.host.url=http://192.168.1.16:9000 \
+  -Dsonar.login=fcf7cf274ff3a9f9328adae768e331b29628f56b -DskipTests"
+    }
+        }
+        
+      
+           stage('deploy to Nexus') {
+      steps {
+        sh 'mvn clean deploy -Dmaven.test.skip=true'
+      }
+    }
+  
+
+        
+
+
+
+}
+   
+
+}
