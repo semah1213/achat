@@ -8,11 +8,7 @@ stages {
                 }  
             }
 			
-			stage('Docker compose') {
-            steps {
-            sh 'docker-compose up -d';
-			}  
-			}
+			
 			
                stage('Maven Clean') {
                         steps {
@@ -36,7 +32,8 @@ stages {
                sh 'mvn verify'
           }
        }
-		stage('Docker compose') {
+       
+       stage('Docker compose') {
             steps {
             sh 'docker-compose up -d';
 			}  
@@ -47,7 +44,8 @@ stages {
 			sh 'sleep 120'
 			}  
 			}
-    stage ('Scan Sonar'){
+       
+       stage ('Scan Sonar'){
     steps {
     sh "mvn sonar:sonar \
           -Dsonar.projectKey=achat \
@@ -55,27 +53,32 @@ stages {
           -Dsonar.login=fcf7cf274ff3a9f9328adae768e331b29628f56b"
     }
     }
-	 stage('Nexus Deploy') {
+    
+    	 stage('Nexus Deploy') {
       steps {
         sh 'mvn clean deploy -Dmaven.test.skip=true'
       }
     }
 	
 	
+		
+    
+
+	
 	stage("Docker Image") {
                        steps{
 
-                           sh 'docker build -t raniaothmani/achat .'
+                           sh 'docker build -t raniaoth/achat .'
                        }
                }
            stage("DockerHub Login") {
                        steps{
-                           sh 'echo "Login to dockerhub in progress" | docker login -u raniaothmani -p azerty12345'
+                           sh 'echo "Login to dockerhub in progress" | docker login -u raniaoth -p rania123456789'
                        }
                }
            stage("DockerHub Push") {
                        steps{
-                        sh 'docker push raniaothmani/achat'
+                        sh 'docker push raniaoth/achat'
                    }
               }
 			  
