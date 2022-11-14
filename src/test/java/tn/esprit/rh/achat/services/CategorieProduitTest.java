@@ -20,7 +20,7 @@ import tn.esprit.rh.achat.entities.CategorieProduit;
 import tn.esprit.rh.achat.repositories.CategorieProduitRepository;
 
 
-@SpringBootTest(classes =  CategorieProduitTest.class)
+@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class CategorieProduitTest {
 /*	@Autowired
@@ -49,6 +49,7 @@ public class CategorieProduitTest {
 	Assertions.assertNotNull(categorie1);
 	}
 
+	
 	@Test
 	public void createcategorieproduitTest()
 	{
