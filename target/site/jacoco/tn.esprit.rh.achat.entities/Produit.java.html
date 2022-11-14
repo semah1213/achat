@@ -18,10 +18,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-<span class="nc" id="L21">@Getter</span>
-<span class="nc" id="L22">@Setter</span>
+@Getter
+<span class="pc" id="L22">@Setter</span>
 <span class="nc" id="L23">@AllArgsConstructor</span>
-<span class="nc" id="L24">@NoArgsConstructor</span>
+<span class="fc" id="L24">@NoArgsConstructor</span>
 public class Produit implements Serializable {
 
 	/**
@@ -30,27 +30,27 @@ public class Produit implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idProduit;
-	private String codeProduit;
-	private String libelleProduit;
-	private float prix;
+<span class="fc" id="L33">	private Long idProduit;</span>
+<span class="nc" id="L34">	private String codeProduit;</span>
+<span class="nc" id="L35">	private String libelleProduit;</span>
+<span class="nc" id="L36">	private float prix;</span>
 	@Temporal(TemporalType.DATE)
-	private Date dateCreation;
+<span class="nc" id="L38">	private Date dateCreation;</span>
 	@Temporal(TemporalType.DATE)
-	private Date dateDerniereModification;
+<span class="nc" id="L40">	private Date dateDerniereModification;</span>
 	@ManyToOne
 	@JsonIgnore
-	private Stock stock;
+<span class="nc" id="L43">	private Stock stock;</span>
 	@OneToMany(mappedBy = &quot;produit&quot;)
 	@JsonIgnore
-	private Set&lt;DetailFacture&gt; detailFacture;
+<span class="nc" id="L46">	private Set&lt;DetailFacture&gt; detailFacture;</span>
 	@ManyToOne
 	@JsonIgnore
-	private CategorieProduit categorieProduit;
+<span class="nc" id="L49">	private CategorieProduit categorieProduit;</span>
 	
-
-
-	
-
+<span class="fc" id="L51">	public Produit(long l, long l1) {</span>
+<span class="fc" id="L52">	}</span>
+<span class="fc" id="L53">	public Produit(long idProduit, String codeProduit, int i, Object o, Object dateCreation, Object dateDerniereModification, Object stock, Object detailFacture, Object categorieProduit) {</span>
+<span class="fc" id="L54">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
