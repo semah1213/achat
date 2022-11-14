@@ -1,6 +1,8 @@
 package tn.esprit.rh.achat.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,63 +37,35 @@ public class CategorieProduitTest {
         Assertions.assertEquals(0, listCategories.size());
 	}*/
 	
-	@Mock
+	@Mock	
 	CategorieProduitRepository categorieProduitRepository;
-
 	@InjectMocks
-	CategorieProduitServiceImpl CategorieProduitServiceImpl;
+	CategorieProduitServiceImpl categorieProduit;
 
-	CategorieProduit categorieProduit = new CategorieProduit(Long.valueOf(1), "123", "f1", null);
+	CategorieProduit c1 = new CategorieProduit (1L,"abc","homme",null);
+	CategorieProduit c2 = new CategorieProduit (2L,"abd","femme",null);
 
-	List<CategorieProduit> listCategorieProduit = new ArrayList<CategorieProduit>() {
-		{
-			add(new CategorieProduit(Long.valueOf(2), "456", "f2", null));
-			add(new CategorieProduit(Long.valueOf(3), "789", "f3", null));
-		}
-	};
-	
 	@Test
-	public void TestretrieveAllStocks() {
-
-		Mockito.when(categorieProduitRepository.findAll()).thenReturn(listCategorieProduit);
-		List<CategorieProduit> list = CategorieProduitServiceImpl.retrieveAllCategorieProduits();
-		assertEquals(2, list.size());
-		System.out.println("Retrieve all");
+	public void testRetrievecategorie() {
+	Mockito.when(categorieProduitRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(c1));
+	CategorieProduit categorie1 = categorieProduit.retrieveCategorieProduit(1L);
+	Assertions.assertNotNull(categorie1);
 	}
-	
-	@Test
-	public void testAddStock() {
 
-		Mockito.when(categorieProduitRepository.save(categorieProduit)).thenReturn(categorieProduit);
-		CategorieProduit categorieProduit1 = CategorieProduitServiceImpl.addCategorieProduit(categorieProduit);
-		Assertions.assertNotNull(categorieProduit1);
-		System.out.println("added !");
-	}
-	
 	@Test
-	public void testdeleteStock() {
-		CategorieProduit categorieProduit1 = new CategorieProduit(Long.valueOf(4), "741", "f4", null);
-		CategorieProduitServiceImpl.deleteCategorieProduit(categorieProduit1.getIdCategorieProduit());
-		Mockito.verify(categorieProduitRepository).deleteById(categorieProduit1.getIdCategorieProduit());
-		System.out.println("deleted");
-	}
-	
-	@Test
-	public void testUpdateStock() {
-		categorieProduit.setLibelleCategorie("libelleUpdated");
-		Mockito.when(categorieProduitRepository.save(categorieProduit)).thenReturn(categorieProduit);
-		CategorieProduit categorieProduit1 = CategorieProduitServiceImpl.updateCategorieProduit(categorieProduit);
-		Assertions.assertEquals(categorieProduit.getLibelleCategorie(), categorieProduit1.getLibelleCategorie());
-		System.out.println(categorieProduit1);
-	}
-	
-	@Test
-	public void testRetrieveStock() {
+	public void createcategorieproduitTest()
+	{
+		CategorieProduit cat1 = new CategorieProduit(1L,"abc","homme",null);
 
-		Mockito.when(categorieProduitRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(categorieProduit));
-		CategorieProduit categorieProduit1 = CategorieProduitServiceImpl.retrieveCategorieProduit(Long.valueOf(1));
-		Assertions.assertNotNull(categorieProduit1);
-		System.out.println("Retrieved !");
+		categorieProduit.addCategorieProduit(cat1);
+
+		verify(categorieProduitRepository, times(1)).save(cat1);
+	}
+	@Test
+	public void testDeleteStock() {
+	    long catid =1L;
+	    categorieProduit.deleteCategorieProduit(catid);
+	    Assertions.assertNull(categorieProduit.retrieveCategorieProduit(catid));
 	}
 	
 
