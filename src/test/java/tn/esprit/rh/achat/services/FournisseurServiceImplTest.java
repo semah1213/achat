@@ -26,7 +26,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
-public class FournisseurServiceTest {
+public class FournisseurServiceImplTest {
 
     @Mock
     FournisseurRepository fournisseurRepository;
