@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout SCM') {
+          steps {
+            checkout([
+              $class: 'GitSCM',
+              branches: [[name: 'semah_facture']],
+              userRemoteConfigs: [[
+                url: 'https://github.com/semah1213/achat.git',
+              ]]
+             ])
+           }
+        }
+        
+        
+         stage('MVN CLEAN') {
+            steps {
+               sh 'echo skipCLEAN'  
+               sh 'mvn -U clean install -DskipTests=true' 
+            }
+        }
+        
+       stage('MVN COMPILE') {
+            steps {
+               sh 'echo skipCOMPILE' 
+               sh 'mvn compile' 
+            }
+        }
+       stage("Junit/Mockito"){
+         steps {
+              sh 'mvn test -Dtest=tn.esprit.rh.achat.services.FactureServiceTestMock -Dmaven.test.failure.ignore=true'
+               }
+         }
+       /*  stage('JUNIT') {
+            steps {
+              sh 'echo skipJUNIT'  // sh 'mvn clean test -Dtest=tn.esprit.rh.achat.ProduitServiceJuinitTest -Dmaven.test.failure.ignore=true'  // 
+            }
+        }
+        */
+        stage('MVN SONARQUBE') {
+            steps {
+              sh 'echo skipsnoar'  
+              sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=admin' //   sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=0000'
+            }
+        }
+        stage('NEXUS'){
+            steps{
+               sh 'mvn deploy -DskipStaging=true -Dmaven.deploy.skip=false -Dmaven.test.skip=true' // sh 'echo NEXUS'  //
+            }
+        }
+        stage('Docker Image'){
+            steps{
+                sh 'docker build -t semah12/springbootdevops:latest .'
+                
+            }
+        }
+        
+        stage('Docker push'){
+            steps{
+                sh 'docker login -u semah12 -p samehleomessi10'
+                sh 'docker push semah12/springbootdevops:latest'
+            }
+        }
+        
+        stage('Docker compose'){
+            steps{
+                sh 'docker-compose up  --build --force-recreate -d'
+            }
+        }
+        
+    }
+}
