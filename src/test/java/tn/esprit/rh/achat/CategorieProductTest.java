@@ -50,8 +50,8 @@ public class CategorieProductTest {
 		}
 	};
 	
-	/*@Test
-	public void TestretrieveAllStocks() {
+	@Test
+	public void TestretrieveAllCategorie() {
 
 		Mockito.when(categorieProduitRepository.findAll()).thenReturn(listCategorieProduit);
 		List<CategorieProduit> list = CategorieProduitServiceImpl.retrieveAllCategorieProduits();
@@ -60,7 +60,7 @@ public class CategorieProductTest {
 	}
 	
 	@Test
-	public void testAddStock() {
+	public void testAddCategorie() {
 
 		Mockito.when(categorieProduitRepository.save(categorieProduit)).thenReturn(categorieProduit);
 		CategorieProduit categorieProduit1 = CategorieProduitServiceImpl.addCategorieProduit(categorieProduit);
@@ -69,7 +69,7 @@ public class CategorieProductTest {
 	}
 	
 	@Test
-	public void testdeleteStock() {
+	public void testdeleteCategorie() {
 		CategorieProduit categorieProduit1 = new CategorieProduit(Long.valueOf(4), "741", "f4", null);
 		CategorieProduitServiceImpl.deleteCategorieProduit(categorieProduit1.getIdCategorieProduit());
 		Mockito.verify(categorieProduitRepository).deleteById(categorieProduit1.getIdCategorieProduit());
@@ -77,7 +77,7 @@ public class CategorieProductTest {
 	}
 	
 	@Test
-	public void testUpdateStock() {
+	public void testUpdateCategorie() {
 		categorieProduit.setLibelleCategorie("libelleUpdated");
 		Mockito.when(categorieProduitRepository.save(categorieProduit)).thenReturn(categorieProduit);
 		CategorieProduit categorieProduit1 = CategorieProduitServiceImpl.updateCategorieProduit(categorieProduit);
@@ -86,11 +86,11 @@ public class CategorieProductTest {
 	}
 	
 	@Test
-	public void testRetrieveStock() {
+	public void testRetrieveCategorie() {
 
 		Mockito.when(categorieProduitRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(categorieProduit));
 		CategorieProduit categorieProduit1 = CategorieProduitServiceImpl.retrieveCategorieProduit(Long.valueOf(1));
 		Assertions.assertNotNull(categorieProduit1);
 		System.out.println("Retrieved !");
-	}*/
+	}
 }
