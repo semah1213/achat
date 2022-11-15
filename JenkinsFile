@@ -32,24 +32,11 @@ stages {
                sh 'mvn verify'
           }
        }
-       
-       stage('Docker compose') {
-            steps {
-            sh 'docker-compose up -d';
-			}  
-			}
-			
-			stage('Wait 120s') {
-            steps {
-			sh 'sleep 120'
-			}  
-			}
-       
        stage ('Scan Sonar'){
     steps {
     sh "mvn sonar:sonar \
           -Dsonar.projectKey=achat \
-          -Dsonar.host.url=http://192.168.2.81:9000 \
+          -Dsonar.host.url=http://192.168.1.16:9000 \
           -Dsonar.login=fcf7cf274ff3a9f9328adae768e331b29628f56b"
     }
     }
@@ -59,13 +46,8 @@ stages {
         sh 'mvn clean deploy -Dmaven.test.skip=true'
       }
     }
-	
-	
-		
     
-
-	
-	stage("Docker Image") {
+    stage("Docker Image") {
                        steps{
 
                            sh 'docker build -t raniaoth/achat .'
@@ -82,6 +64,19 @@ stages {
                    }
               }
 			  
+       
+       stage('Docker compose') {
+            steps {
+            sh 'docker-compose up -d';
+			}  
+			}
+			
+			stage('Wait 120s') {
+            steps {
+			sh 'sleep 120'
+			}  
+			}
+       
 			  
 }
    post { 
