@@ -10,7 +10,7 @@ import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProduitServiceTest {
+public class ProduitServiceImplTest {
 
     @Autowired
     IProduitService ps;
