@@ -1,0 +1,101 @@
+pipeline {
+    agent any
+    environment {
+        registry = "ihebharrath/repo"
+        
+        registryCredential = "dockerhub_id"
+        
+        dockerImage = ' '
+        }
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "M2_HOME"
+    }
+    
+   stages{
+    stage('Preparation') { 
+        steps{
+        git url:'https://github.com/semah1213/achat.git', branch : 'iheb'
+             }
+    }
+     stage('clean project  '){
+         steps{
+           echo 'Cleaning Project '
+           echo "Maven Version "
+           sh "mvn -Dmaven.test.failure.ignore=true clean package"
+              }
+      }
+      
+      stage('Building Project'){
+            steps{
+                script{
+                        sh 'mvn clean install -DskipTests'
+                }
+            }
+        }
+      stage("Runing Tests with Mockito") {
+               steps{
+                   sh 'mvn test'
+                }
+        }    
+        
+        
+        
+        
+      stage(" SonarQube") {
+            steps{
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=iheb -DskipTests'
+            }
+        }
+       stage(" Nexus") {
+            steps{
+                //sh 'mvn deploy '
+                sh 'echo nexsus'
+            }
+        }
+
+        stage('docker build image '){
+        steps{
+            script{
+                sh 'docker build -t achat .'
+            }
+           
+        }
+       
+    }
+        stage('docker push image '){
+        steps{
+            script{
+                withCredentials([string(credentialsId: 'dockerhub_id', variable: 'dockerhubpwd')]) {
+                sh 'docker login -u ihebharrath -p ${dockerhubpwd}'
+                     }
+                sh 'docker tag  achat ihebharrath/repo:latest'    
+                sh 'docker push ihebharrath/repo'    
+            }
+           
+        }
+       
+    }
+      
+        
+        stage('Docker compose') {
+
+                  steps {
+                       sh 'docker-compose up -d '
+                         }  }
+        
+        stage('Email') {
+        steps{
+            mail bcc: '',
+            body: 'Heyy , i am still working ',
+            cc: '', from: '',
+            replyTo: '', subject: 'The pipeline is working on something here ...',
+            to: 'iheb.harrath@esprit.tn'
+        }
+        }                 
+                         
+                         
+        
+   }
+ 
+}
