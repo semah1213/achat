@@ -59,11 +59,15 @@
 		</dependency>
 	</dependencies>
 	<distributionManagement>
-<repository>
-<id>deploymentRepo</id>
-<url>http://172.10.0.55:8081/repository/maven-releases</url>
-</repository>
-</distributionManagement>
+    <repository>
+        <id>deploymentRepo</id>
+        <url>http://172.10.0.55:8081/repository/maven-releases/</url>
+    </repository>
+    <snapshotRepository>
+        <id>nexus-snapshots</id>
+        <url>http://172.10.0.55:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
