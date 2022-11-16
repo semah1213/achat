@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   api:
-    image: ihebharrath/repo
+    image: ihebharrath/repo1
     container_name: achat
     ports:
       - ${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}
